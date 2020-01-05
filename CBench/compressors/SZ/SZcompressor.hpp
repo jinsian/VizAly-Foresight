@@ -81,8 +81,13 @@ inline int SZCompressor::compress(void *input, void *&output, std::string dataTy
 			// Unknown mode, just fill in input to SZ
 		}
 
-	std::size_t csize = 0;
-	std::uint8_t *cdata = SZ_compress_args(SZ_FLOAT, static_cast<float *>(input), &csize, mode, absTol, relTol, powerTol, n[4], n[3], n[2], n[1], n[0]);
+        omp_set_num_threads(20);
+
+        std::uint8_t *cdata = SZ_compress_float_3D_MDQ_openmp(static_cast<float *>(input), n[2], n[1], n[0], absTol, &csize);
+        printf("compress successed\n");
+	
+// 	std::size_t csize = 0;
+// 	std::uint8_t *cdata = SZ_compress_args(SZ_FLOAT, static_cast<float *>(input), &csize, mode, absTol, relTol, powerTol, n[4], n[3], n[2], n[1], n[0]);
 
 	output = cdata;
 	cTime.stop();
@@ -105,10 +110,18 @@ inline int SZCompressor::decompress(void *&input, void *&output, std::string dat
 			numel *= n[i];
 
 	Timer dTime; dTime.start();
-	output = SZ_decompress(SZ_FLOAT, static_cast<std::uint8_t *>(input), cbytes, n[4], n[3], n[2], n[1], n[0]);
+        omp_set_num_threads(20);
+
+        float *passer = NULL;
+        decompressDataSeries_float_3D_openmp(&passer, n[2], n[1], n[0], static_cast<std::uint8_t *>(input) + 24);
+        output = passer;
+        printf("decompress successed\n");
+	
+// 	output = SZ_decompress(SZ_FLOAT, static_cast<std::uint8_t *>(input), cbytes, n[4], n[3], n[2], n[1], n[0]);
 	dTime.stop();
 
-	std::free(input);	input=NULL;
+// 	std::free(input);	
+	input=NULL;
 
 	log << compressorName << " ~ DecompressTime: " << dTime.getDuration() << " s " << std::endl;
 
