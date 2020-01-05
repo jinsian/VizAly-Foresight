@@ -101,13 +101,29 @@ The following experimental **GPU** compressors are also supported:
 * Compute times
 
 # Reproducing IPDPS20 Submission Results：
-* The included JSON files are used for performing Foresight toolkit with HACC and Nyx dataset on the PantaRhei cluster at The University of Alabama.
+The included json files are used for performing Foresight toolkit with HACC and Nyx dataset on the PantaRhei cluster at The University of Alabama. Foresight toolkit is available on GitHub at https://github.com/lanl/VizAly-Foresight. json file used in this experiment are included in ./VizAly-Foresight/input/nyx/ and ./VizAly-Foresight/input/hacc/.
 
-* Foresight toolkit is available on GitHub at https://github.com/lanl/VizAly-Foresight.
+### Data Preparation
+* Download HACC Dataset: Avalible at http://dx.doi.org/10.21227/zg3m-8j73.
+* Download Nyx Dataset: Avalible at http://dx.doi.org/10.21227/k8gb-vq78.
+* Based on the location of downloaded dataset, Asociated json file will reqire modification.
 
-* Please move the JSON file for Nyx data to the directory ./VizAly-Foresight/input/nyx/ and the JSON file for HACC data to the directory ./VizAly-Foresight/input/hacc/.
+### Experiemnt with GPU-SZ
+* When build Foresight, use command:
+```
+source build.sh -all
+```
+* Follow the instructions shown in ./VizAly-Foresight/Analysis/README.md to use Associated json file. Associated json file includes ./VizAly-Foresight/input/hacc/pantarhei_hacc_sz.json and ./VizAly-Foresight/input/nyx/pantarhei_nyx_sz.json.
+* Please run the code on node equipeted with at least 20 CPU cores.
+* If logarithmic transformation is desired, please uncommon the associated code in ./VizAly-Foresight/CBench/main.cpp.
 
-* To use the JSON files, please follow the instructions shown in ./VizAly-Foresight/Analysis/README.md.
+### Experiment with cuZFP
+* When build Foresight, use command:
+```
+source build.sh -gpu
+```
+* Follow the instructions shown in ./VizAly-Foresight/Analysis/README.md to use Associated json file. Associated json file includes ./VizAly-Foresight/input/hacc/pantarhei_hacc_zfp.json and ./VizAly-Foresight/input/nyx/pantarhei_nyx_zfp.json.
+* Please run the code on GPU node.
 
 # Development
 For information on how to add new compressors and/or metrics, look at the readme in [CBench/compressors](CBench/compressors) and [CBench/metrics](CBench/metrics) respectively. To add new analysis routines, look at the [readme in Analysis/ folder](Analysis/README.md).
