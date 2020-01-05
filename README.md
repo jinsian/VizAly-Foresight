@@ -118,7 +118,7 @@ source build.sh -all
 ```
 * Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [pantarhei_hacc_sz.json](inputs/hacc/pantarhei_hacc_sz.json) and [pantarhei_nyx_sz.json](inputs/nyx/pantarhei_nyx_sz.json).
 * Please run on a node equipped with more than 20 CPU cores.
-* If logarithmic transformation is desired, please uncomment the related code in [CBench/main.cpp](CBench/main.cpp).
+* If logarithmic transformation is desired, please uncomment the related code in [CBench/main.cpp](CBench/main.cpp) from line 281-298 and 328-341.
 
 ### Experiment with cuZFP
 * When build Foresight, please use the command:
