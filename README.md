@@ -100,6 +100,15 @@ The following experimental **GPU** compressors are also supported:
 * Memory Usage
 * Compute times
 
+# Reproducing IPDPS20 Submission Results：
+* The included JSON files are used for performing Foresight toolkit with HACC and Nyx dataset on the PantaRhei cluster at The University of Alabama.
+
+* Foresight toolkit is available on GitHub at https://github.com/lanl/VizAly-Foresight.
+
+* Please move the JSON file for Nyx data to the directory ./VizAly-Foresight/input/nyx/ and the JSON file for HACC data to the directory ./VizAly-Foresight/input/hacc/.
+
+* To use the JSON files, please follow the instructions shown in ./VizAly-Foresight/Analysis/README.md.
+
 # Development
 For information on how to add new compressors and/or metrics, look at the readme in [CBench/compressors](CBench/compressors) and [CBench/metrics](CBench/metrics) respectively. To add new analysis routines, look at the [readme in Analysis/ folder](Analysis/README.md).
 
