@@ -1,0 +1,339 @@
+        "wflow-path": "gpu_nyx_zfp",
+        "foresight-home" : "/home/jinsian/foresight/gpu/VizAly-Foresight/",
+
+        "input":
+        {
+                "filetype": "NYX",
+                "filename": "/home/jinsian/foresight/NVB_C009_l10n512_S12345T692_z42.hdf5",
+
+
+                "group" : "native_fields",
+                "scalars": [ "baryon_density", "dark_matter_density", "temperature", "velocity_x", "velocity_y", "velocity_z" ],
+
+                "uncompressed":
+                [
+                        {
+                                "group": "domain",
+                                "attributes": [
+                                        {
+                                                "name": "shape",
+                                                "type": "int",
+                                                "size": 3
+                                        },
+                                        {
+                                                "name": "size",
+                                                "type": "double",
+                                                "size": 3
+                                        }
+                                ]
+                        },
+
+                        {
+                                "group": "universe",
+                                "attributes":
+                                [
+                                        {
+                                                "name": "hubble",
+                                                "type": "double",
+                                                "size": 1
+                                        },
+
+                                        {
+                                                "name": "omega_b",
+                                                "type": "double",
+                                                "size": 1
+                                        },
+
+                                        {
+                                                "name": "omega_l",
+                                                "type": "double",
+                                                "size": 1
+                                        },
+
+                                        {
+                                                "name": "omega_m",
+                                                "type": "double",
+                                                "size": 1
+                                        },
+
+                                        {
+                                                "name": "redshift",
+                                                "type": "double",
+                                                "size": 1
+                                        }
+                                ]
+                        }
+                ]
+        },
+
+        "compressor-comment" : "which compressors to test",
+        "compressors":
+        [
+        {
+            "name": "SZ_gpu",
+            "compressor-params": [
+                {
+                    "scalar": "baryon_density",
+                    "abs": 3.0
+                },
+                {
+                    "scalar": "dark_matter_density",
+                    "abs": 0.10
+                },
+                {
+                    "scalar": "temperature",
+                    "abs": 20000.0
+                },
+                {
+                    "scalar": [
+                        "velocity_x",
+                        "velocity_y",
+                        "velocity_z"
+                    ],
+                    "abs": 400000.0
+                }
+            ],
+            "output-prefix": "sz_gpu_test_0.10_"
+        },
+        {
+            "name": "SZ_gpu",
+            "compressor-params": [
+                {
+                    "scalar": "baryon_density",
+                    "abs": 2.7
+                },
+                {
+                    "scalar": "dark_matter_density",
+                    "abs": 0.09
+                },
+                {
+                    "scalar": "temperature",
+                    "abs": 18000.0
+                },
+                {
+                    "scalar": [
+                        "velocity_x",
+                        "velocity_y",
+                        "velocity_z"
+                    ],
+                    "abs": 360000.0
+                }
+            ],
+            "output-prefix": "sz_gpu_test_0.09_"
+        },
+        {
+            "name": "SZ_gpu",
+            "compressor-params": [
+                {
+                    "scalar": "baryon_density",
+                    "abs": 2.4
+                },
+                {
+                    "scalar": "dark_matter_density",
+                    "abs": 0.08
+                },
+                {
+                    "scalar": "temperature",
+                    "abs": 16000.0
+                },
+                {
+                    "scalar": [
+                        "velocity_x",
+                        "velocity_y",
+                        "velocity_z"
+                    ],
+                    "abs": 320000.0
+                }
+            ],
+            "output-prefix": "sz_gpu_test_0.08_"
+        },
+        {
+            "name": "SZ_gpu",
+            "compressor-params": [
+                {
+                    "scalar": "baryon_density",
+                    "abs": 2.1
+                },
+                {
+                    "scalar": "dark_matter_density",
+                    "abs": 0.07
+                },
+                {
+                    "scalar": "temperature",
+                    "abs": 14000.0
+                },
+                {
+                    "scalar": [
+                        "velocity_x",
+                        "velocity_y",
+                        "velocity_z"
+                    ],
+                    "abs": 280000.0
+                }
+            ],
+            "output-prefix": "sz_gpu_test_0.07_"
+        },
+        {
+            "name": "SZ_gpu",
+            "compressor-params": [
+                {
+                    "scalar": "baryon_density",
+                    "abs": 1.8
+                },
+                {
+                    "scalar": "dark_matter_density",
+                    "abs": 0.06
+                },
+                {
+                    "scalar": "temperature",
+                    "abs": 12000.0
+                },
+                {
+                    "scalar": [
+                        "velocity_x",
+                        "velocity_y",
+                        "velocity_z"
+                    ],
+                    "abs": 240000.0
+                }
+            ],
+            "output-prefix": "sz_gpu_test_0.06_"
+        },
+        {
+            "name": "SZ_gpu",
+            "compressor-params": [
+                {
+                    "scalar": "baryon_density",
+                    "abs": 1.5
+                },
+                {
+                    "scalar": "dark_matter_density",
+                    "abs": 0.05
+                },
+                {
+                    "scalar": "temperature",
+                    "abs": 10000.0
+                },
+                {
+                    "scalar": [
+                        "velocity_x",
+                        "velocity_y",
+                        "velocity_z"
+                    ],
+                    "abs": 200000.0
+                }
+            ],
+            "output-prefix": "sz_gpu_test_0.05_"
+        }
+        ],
+
+
+        "cbench":
+        {
+                "path" : "mpirun $foresight-home$build/CBench",
+
+                "output" :
+                {
+                        "run-path" : "/home/jinsian/foresight/gpu/VizAly-Foresight/build/",
+
+                        "output-decompressed": false,
+                        "output-decompressed-location" : "decompressed_files",
+
+                        "logfname-comment": "name of output log file",
+                        "log-file" : "runlog_",
+
+                        "metricsfname-comment": "name of file with output",
+                        "metrics-file" : "metrics_"
+                },
+
+
+                "metrics":
+                [
+                        {
+                                "name" : "absolute_error"
+                        },
+
+                        {
+                                "name" : "relative_error"
+                        },
+
+                        {
+                                "name" : "mse"
+                        },
+
+                        {
+                                "name" : "psnr"
+                        }
+                ],
+
+                "evn_path": "",
+
+                "configuration":
+                {
+                        "partition": "gpuq",
+                        "nodes": 1,
+                        "ntasks-per-node": 1
+                }
+        },
+
+
+        "pat" :
+        {
+                "evn_path" : "",
+
+                "analysis-tool" :
+                {
+                        "gimlet-home" : "/home/jinsian/foresight/gpu/gimlet2",
+
+                        "analytics":
+                        [
+                                {
+                                        "name": "sim_stats",
+                                        "type" : ["rhob", "rhom", "rhodm", "temp", "velmag", "vz"],
+                                        "postfix" : "_ps3d.txt",
+                                        "path": "/home/jinsian/foresight/gpu/gimlet2/apps/sim_stats/sim_stats.ex",
+                                        "configuration" : {
+                                                "partition" : "gpuq",
+                                                "nodes" : 1,
+                                                "ntasks-per-node" : 32
+                                        }
+                                },
+
+                                {
+                                        "name": "lya_all_axes",
+                                        "type" : ["x", "y", "z"],
+                                        "postfix" : "_flux_ps1d.txt",
+                                        "path": "/home/jinsian/foresight/gpu/gimlet2/apps/lya_all_axes/lya_all_axes.ex",
+                                        "command" : "cp /home/jinsian/foresight/gpu/gimlet2/treecools/TREECOOL_middle .",
+                                        "configuration" : {
+                                                "partition" : "gpuq",
+                                                "nodes" : 1,
+                                                "ntasks-per-node" : 32
+                                        }
+                                }
+                        ]
+                },
+
+                "input-files" : [],
+
+                "analysis" : []
+        },
+
+        "cinema-plots":
+        {
+                "cinema-db-name" : "cinemaDB",
+                "plotting" :
+                {
+                        "x-range" : [0, 10]
+                },
+
+                "evn_path": "",
+                "configuration":
+                {
+                        "partition": "gpuq",
+                        "nodes": 1,
+                        "ntasks-per-node": 32
+                }
+        }
+}
+
