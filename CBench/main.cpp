@@ -261,23 +261,118 @@ int main(int argc, char *argv[])
 
 			MPI_Barrier(MPI_COMM_WORLD);
 
+			// larger dataset will be cut in smaller chunks for gpu compression
+                        void *decompdata = NULL;
+                        void *formeddata = NULL;
+			void *signflag = NULL;
+                        unsigned long totaldecompressedsize = 0;
+			
+			// for HACC sample dataset
+                        if (Enumber == 1073726359) {
+                                for (int ff = 1073726359; ff < 512*512*512*8; ff++) {
+                                        static_cast<float *>(ioMgr->data)[ff] = 0.0;
+                                }
+                                size_t decompdatasize = 512*512*512;
+                                size_t helper001 = 4*8;
+                                printf("decompdatasize = %d\n", decompdatasize);
+                                decompdata = malloc(decompdatasize * helper001);
+                                formeddata = malloc(decompdatasize * helper001);
+				
+/*                              
+				// logarithmic transformation
+                                printf("formation started\n");
+                                for (int ii = 0; ii < 1073726359; ii++)
+                                        if (abs(static_cast<float *>(ioMgr->data)[ii]) == 0.0)
+                                                static_cast<float *>(formeddata)[ii] = -0.0;
+                                        else {
+                                                if (static_cast<float *>(ioMgr->data)[ii] < 0) {
+                                                        static_cast<float *>(formeddata)[ii] = log(-static_cast<float *>(ioMgr->data)[ii]);
+                                                        static_cast<int *>(signflag)[ii] = 0;
+                                                }
+                                                else {
+                                                        static_cast<float *>(formeddata)[ii] = log(static_cast<float *>(ioMgr->data)[ii]);
+                                                        static_cast<int *>(signflag)[ii] = 1;
+                                                }
+                                        }
+                                printf("formation end\n");                             
+*/
 
-			//
-			// compress
-			void *cdata = NULL;
+                                for (int cos1 = 0; cos1 < 8; cos1++) {
+                                        printf("Start loop %d\n", cos1);
+                                        size_t shift0 = decompdatasize*4;
+                                        size_t shift1 = decompdatasize*4;
+                                        if (cos1 == 56)
+                                                shift1 = 4*(1073726359-512*512*512);
+                                        void *cdata = NULL;
 
-			compressClock.start();
-			compressorMgr->compress(ioMgr->data, cdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
-			compressClock.stop();
+					// compress
+                                        compressClock.start();
+                                        compressorMgr->compress(ioMgr->data + (cos1*shift0), cdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
+                                        compressClock.stop();
+
+                                        void *partDecompdata = NULL;
+
+					// decompress
+                                        decompressClock.start();
+                                        compressorMgr->decompress(cdata, partDecompdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
+                                        decompressClock.stop();
+
+                                        memcpy(decompdata + (cos1*shift0), partDecompdata, shift1);
+                                        unsigned long compressedSize = (unsigned long) compressorMgr->getCompressedSize();
+                                        totaldecompressedsize += compressedSize;
+                                        free(cdata);
+                                        free(partDecompdata);
+                                        printf("End loop %d\n", cos1);
+                                }
+
+/*
+				// logarithmic transformation back
+                                for (int ii = 0; ii < 1073726359; ii++)
+                                        if (static_cast<float *>(decompdata)[ii] == 0.0)
+                                                static_cast<float *>(decompdata)[ii] = 0.0;
+                                        else {
+                                                if (static_cast<int *>(signflag)[ii] == 0)
+                                                        static_cast<float *>(decompdata)[ii] = -exp(static_cast<float *>(decompdata)[ii]);
+                                                else
+                                                        static_cast<float *>(decompdata)[ii] = exp(static_cast<float *>(decompdata)[ii]);
+                                        }
+				free(signflag);
+				free(formeddata);
+*/
+                        }
+			// for Nyx sample dataset
+                        else {
+                                
+                                // compress
+                                void *cdata = NULL;
+
+                                compressClock.start();
+                                compressorMgr->compress(ioMgr->data, cdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
+                                compressClock.stop();
+
+                                // decompress
+                                decompressClock.start();
+                                compressorMgr->decompress(cdata, decompdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
+                                decompressClock.stop();
+                        }
 
 
-			//
-			// decompress
-			void *decompdata = NULL;
+// 			// original compression and decompression
+// 			// compress
+// 			void *cdata = NULL;
 
-			decompressClock.start();
-			compressorMgr->decompress(cdata, decompdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
-			decompressClock.stop();
+// 			compressClock.start();
+// 			compressorMgr->compress(ioMgr->data, cdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
+// 			compressClock.stop();
+
+
+// 			//
+// 			// decompress
+// 			void *decompdata = NULL;
+
+// 			decompressClock.start();
+// 			compressorMgr->decompress(cdata, decompdata, ioMgr->getType(), ioMgr->getTypeSize(), ioMgr->getSizePerDim());
+// 			decompressClock.stop();
 
 
 			// Get compression ratio
@@ -285,10 +380,16 @@ int main(int argc, char *argv[])
 			unsigned long compressedSize = (unsigned long) compressorMgr->getCompressedSize();
 			MPI_Allreduce(&compressedSize, &totalCompressedSize, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
 
+                        if (Enumber == 1073726359)
+                                totalCompressedSize = totaldecompressedsize;
+			
 			unsigned long totalUnCompressedSize;
 			unsigned long unCompressedSize = ioMgr->getTypeSize() * ioMgr->getNumElements();
 			MPI_Allreduce(&unCompressedSize, &totalUnCompressedSize, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
-
+                        
+			size_t helper002 = 512*512*512*8;
+                        if (Enumber == 1073726359)
+                                totalUnCompressedSize = ioMgr->getTypeSize() * helper002;
 
 			debuglog << "\n\ncompressedSize: " << compressedSize << ", totalCompressedSize: " << totalCompressedSize << std::endl;
 			debuglog << "unCompressedSize: " << unCompressedSize << ", totalUnCompressedSize: " << totalUnCompressedSize << std::endl;
