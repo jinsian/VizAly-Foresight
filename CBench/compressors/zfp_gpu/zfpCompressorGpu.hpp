@@ -77,6 +77,15 @@ inline int ZFPCompressorGpu::compress(void *input, void *&output, std::string da
             numDims++;
         }
 
+    // formation from 1D to 3D for sample HACC dataset
+    if (n[0] == 1073726359) {
+        n[0] = 512*64*64;
+        n[1] = 8;
+        n[2] = 8;
+        numel = 512 * 512 * 512;
+        numDims = 3;
+    }
+
     // Read in json compression parameters
     double abs = 1E-3;
     int rel = 32;
