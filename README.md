@@ -108,15 +108,15 @@ Below instructions illustrate how to run Foresight toolkit on the HACC and Nyx d
 * Download Nyx dataset at http://dx.doi.org/10.21227/k8gb-vq78.
 
 ### Configuration file preparation
-* The JSON files used in the experiment for Nyx and HACC are included in [input/hacc](input/nyx) and [input/hacc](input/hacc), separately.
-* Based on the locations of the downloaded datasets, please modify the JSON files accordingly.
+* The JSON files used in the experiment for Nyx and HACC are included in [inputs/hacc](https://github.com/jinsian/VizAly-Foresight/tree/master/inputs/nyx) and [inputs/hacc](https://github.com/jinsian/VizAly-Foresight/tree/master/inputs/hacc), separately.
+* Based on the locations of your downloaded datasets, please modify the JSON files accordingly.
 
 ### Experiemnt with GPU-SZ
 * When build Foresight, please use the command:
 ```
 source build.sh -all
 ```
-* Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [input/hacc/pantarhei_hacc_sz.json](input/hacc/pantarhei_hacc_sz.json) and [input/nyx/pantarhei_nyx_sz.json](input/nyx/pantarhei_nyx_sz.json).
+* Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [pantarhei_hacc_sz.json](inputs/hacc/pantarhei_hacc_sz.json) and [pantarhei_nyx_sz.json](inputs/nyx/pantarhei_nyx_sz.json).
 * Please run on a node equipped with more than 20 CPU cores.
 * If logarithmic transformation is desired, please uncomment the related code in [CBench/main.cpp](CBench/main.cpp).
 
@@ -125,7 +125,7 @@ source build.sh -all
 ```
 source build.sh -gpu
 ```
-* Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [input/hacc/pantarhei_hacc_zfp.json](input/hacc/pantarhei_hacc_zfp.json) and [input/nyx/pantarhei_nyx_zfp.json](input/nyx/pantarhei_nyx_zfp.json).
+* Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [pantarhei_hacc_zfp.json](inputs/hacc/pantarhei_hacc_zfp.json) and [pantarhei_nyx_zfp.json](inputs/nyx/pantarhei_nyx_zfp.json).
 * Please run the code on a node equipped with GPU.
 
 # Development
