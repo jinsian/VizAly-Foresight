@@ -100,30 +100,33 @@ The following experimental **GPU** compressors are also supported:
 * Memory Usage
 * Compute times
 
-# Reproducing IPDPS20 Submission Results：
-The included json files are used for performing Foresight toolkit with HACC and Nyx dataset on the PantaRhei cluster at The University of Alabama. Foresight toolkit is available on GitHub at https://github.com/lanl/VizAly-Foresight. json file used in this experiment are included in ./VizAly-Foresight/input/nyx/ and ./VizAly-Foresight/input/hacc/.
+# Reproducing Results in IPDPS'20 Submission
+Below instructions illustrate how to run Foresight toolkit on the HACC and Nyx dataset using the PantaRhei cluster at the University of Alabama in order to reproduce the experimental reults shown in the paper "Understanding GPU-Based Lossy Compression forExtreme-Scale Cosmological Simulations" submitted to IPDPS'20. 
 
-### Data Preparation
-* Download HACC Dataset: Avalible at http://dx.doi.org/10.21227/zg3m-8j73.
-* Download Nyx Dataset: Avalible at http://dx.doi.org/10.21227/k8gb-vq78.
-* Based on the location of downloaded dataset, Asociated json file will reqire modification.
+### Data preparation
+* Download HACC dataset at http://dx.doi.org/10.21227/zg3m-8j73.
+* Download Nyx dataset at http://dx.doi.org/10.21227/k8gb-vq78.
+
+### Configuration file preparation
+* The JSON files used in the experiment for Nyx and HACC are included in [input/hacc](input/nyx) and [input/hacc](input/hacc), separately.
+* Based on the locations of the downloaded datasets, please modify the JSON files accordingly.
 
 ### Experiemnt with GPU-SZ
-* When build Foresight, use command:
+* When build Foresight, please use the command:
 ```
 source build.sh -all
 ```
-* Follow the instructions shown in ./VizAly-Foresight/Analysis/README.md to use Associated json file. Associated json file includes ./VizAly-Foresight/input/hacc/pantarhei_hacc_sz.json and ./VizAly-Foresight/input/nyx/pantarhei_nyx_sz.json.
-* Please run the code on node equipeted with at least 20 CPU cores.
-* If logarithmic transformation is desired, please uncommon the associated code in ./VizAly-Foresight/CBench/main.cpp.
+* Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [input/hacc/pantarhei_hacc_sz.json](input/hacc/pantarhei_hacc_sz.json) and [input/nyx/pantarhei_nyx_sz.json](input/nyx/pantarhei_nyx_sz.json).
+* Please run on a node equipped with more than 20 CPU cores.
+* If logarithmic transformation is desired, please uncomment the related code in [CBench/main.cpp](CBench/main.cpp).
 
 ### Experiment with cuZFP
-* When build Foresight, use command:
+* When build Foresight, please use the command:
 ```
 source build.sh -gpu
 ```
-* Follow the instructions shown in ./VizAly-Foresight/Analysis/README.md to use Associated json file. Associated json file includes ./VizAly-Foresight/input/hacc/pantarhei_hacc_zfp.json and ./VizAly-Foresight/input/nyx/pantarhei_nyx_zfp.json.
-* Please run the code on GPU node.
+* Follow the instructions shown in [Analysis/README.md](Analysis/README.md) to use the JSON files. The corresponding JSON files are [input/hacc/pantarhei_hacc_zfp.json](input/hacc/pantarhei_hacc_zfp.json) and [input/nyx/pantarhei_nyx_zfp.json](input/nyx/pantarhei_nyx_zfp.json).
+* Please run the code on a node equipped with GPU.
 
 # Development
 For information on how to add new compressors and/or metrics, look at the readme in [CBench/compressors](CBench/compressors) and [CBench/metrics](CBench/metrics) respectively. To add new analysis routines, look at the [readme in Analysis/ folder](Analysis/README.md).
